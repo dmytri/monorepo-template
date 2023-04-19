@@ -1,0 +1,35 @@
+kind: Module
+type: container
+name: playwright
+
+variables:
+  baseHostname: ${providers.local-kubernetes.outputs.default-hostname}
+
+services:
+  - name: tests
+    devMode:
+      sync:
+      - source: playwright
+        target: /app
+        exclude: [package-lock.json, node_modules]
+        mode: one-way-replica
+    env:
+      APP_URL: app.${environment.namespace}.${var.baseHostname}
+    ports:
+      - name: http
+        containerPort: 3000
+        servicePort: 80
+    ingresses:
+      - path: /
+        hostname: tests.${environment.namespace}.${var.baseHostname}
+        port: http
+    dependencies:
+      - api
+
+tests:
+  - name: playwright-tests
+    args: [npm, run, test]
+    env:
+      APP_URL: app.${environment.namespace}.${var.baseHostname}
+    dependencies:
+      - app

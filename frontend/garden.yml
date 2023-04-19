@@ -1,0 +1,30 @@
+kind: Module
+type: container
+name: app
+
+variables:
+  baseHostname: ${providers.local-kubernetes.outputs.default-hostname}
+  target-image: "${environment.name == 'dev' ? 'dev' : 'run'}"
+
+build:
+  targetImage: ${var.target-image}
+
+services:
+  - name: app
+    devMode:
+      sync:
+      - source: site
+        target: /app
+        exclude: [package-lock.json, node_modules]
+        mode: one-way-replica
+    ports:
+      - name: http
+        containerPort: 3000
+        servicePort: 80
+    ingresses:
+      - path: /
+        hostname: app.${environment.namespace}.${var.baseHostname}
+        port: http
+    dependencies:
+      - api
+

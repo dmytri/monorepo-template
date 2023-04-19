@@ -1,0 +1,13 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "description": "app tests",
+  "scripts": {
+    "test": "playwright test --reporter list",
+    "test-report": "playwright test --output reports",
+    "playwright": "playwright"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.32.3"
+  }
+}

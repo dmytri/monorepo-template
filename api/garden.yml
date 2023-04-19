@@ -1,0 +1,22 @@
+kind: Module
+type: container
+name: api
+image: postgrest/postgrest:v11.0.0
+
+variables:
+  baseHostname: ${providers.local-kubernetes.outputs.default-hostname}
+
+services:
+  - name: api
+    env:
+      PGRST_DB_URI: postgres://${var.postgres-username}:${var.postgres-password}@db:5432/${var.postgres-database}
+    ports:
+      - name: http
+        containerPort: 3000
+        servicePort: 80
+    ingresses:
+      - path: /
+        port: http
+        hostname: api.${environment.namespace}.${var.baseHostname}
+    dependencies:
+      - db

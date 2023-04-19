@@ -1,0 +1,23 @@
+kind: Project
+name: stack
+
+variables:
+  postgres-database: postgres
+  postgres-username: postgres
+  # @todo secrets management
+  postgres-password: test-password
+
+environments:
+  - name: dev
+    defaultNamespace: dev-${local.username}
+  # @todo preview enviroment needs to be on shared clusiter, not local
+  - name: preview 
+    # @todo use git.commitHash instead of branch for trunk based dev
+    defaultNamespace: preview-${local.username}-${git.branch}
+
+defaultEnvironment: dev
+
+providers:
+  - name: local-kubernetes
+    namespace: ${environment.namespace} 
+    buildMode: cluster-buildkit

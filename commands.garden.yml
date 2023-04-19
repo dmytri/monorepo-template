@@ -1,0 +1,9 @@
+kind: Command
+name: dev-test
+description:
+  short: run dev tests on live containers
+gardenCommand:
+  - exec
+  - tests
+  - npm
+  - test
