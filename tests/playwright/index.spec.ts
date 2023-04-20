@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-var appUrl = `http://${process.env.PLAYWRIGHT_APP}/`;
+var appUrl = `http://${process.env.PLAYWRIGHT_APP}`;
 
 test('meta is correct', async ({ page }) => {
   await page.goto(appUrl);
