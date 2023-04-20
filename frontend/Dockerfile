@@ -1,5 +1,5 @@
 # @todo use hash instead of label for suply chain integrity
-FROM node:lts-slim as dev
+FROM node:lts-alpine as dev
 WORKDIR /app
 COPY site/package.json .
 RUN npm install
