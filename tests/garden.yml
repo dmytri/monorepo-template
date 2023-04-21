@@ -14,7 +14,7 @@ services:
         exclude: [package-lock.json, node_modules]
         mode: one-way-replica
     env:
-      PLAYWRIGHT_APP: app
+      PLAYWRIGHT_APP: app.${environment.namespace}.${var.baseHostname}
     ports:
       - name: http
         containerPort: 3000
@@ -30,6 +30,6 @@ tests:
   - name: playwright-tests
     args: [npm, run, test]
     env:
-      PLAYWRIGHT_APP: app
+      PLAYWRIGHT_APP: app.${environment.namespace}.${var.baseHostname}
     dependencies:
       - app
